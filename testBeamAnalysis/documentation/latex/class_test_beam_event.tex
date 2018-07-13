@@ -1,0 +1,98 @@
+\hypertarget{class_test_beam_event}{}\section{Test\+Beam\+Event Class Reference}
+\label{class_test_beam_event}\index{Test\+Beam\+Event@{Test\+Beam\+Event}}
+
+
+{\ttfamily \#include $<$Test\+Beam\+Event.\+hpp$>$}
+
+Inheritance diagram for Test\+Beam\+Event\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_test_beam_event}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a6eb03eb6d756ef2333730a7c45c384ff}\label{class_test_beam_event_a6eb03eb6d756ef2333730a7c45c384ff}} 
+{\bfseries Test\+Beam\+Event} (int event\+ID)
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a24181fa9039970765268659c88c1f514}\label{class_test_beam_event_a24181fa9039970765268659c88c1f514}} 
+Int\+\_\+t {\bfseries Get\+Event\+ID} () const
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a2bf15ab9482d7fd02436487baba2efe5}\label{class_test_beam_event_a2bf15ab9482d7fd02436487baba2efe5}} 
+Int\+\_\+t {\bfseries Get\+Number\+Of\+Ladders} () const
+\item 
+\mbox{\Hypertarget{class_test_beam_event_af0ec87e7f48f72e0e862dffc53815db5}\label{class_test_beam_event_af0ec87e7f48f72e0e862dffc53815db5}} 
+\mbox{\hyperlink{class_alpide_telescope}{Alpide\+Telescope}} $\ast$ {\bfseries Get\+Telescope} () const
+\item 
+\mbox{\Hypertarget{class_test_beam_event_ab39a199bb41a78b8a5d8d0ae564c9294}\label{class_test_beam_event_ab39a199bb41a78b8a5d8d0ae564c9294}} 
+\mbox{\hyperlink{class_alpide_ladder}{Alpide\+Ladder}} $\ast$ {\bfseries Get\+Ladder} (Int\+\_\+t index)
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a0c24b61aa21b532fb9b75e9a6174b8ab}\label{class_test_beam_event_a0c24b61aa21b532fb9b75e9a6174b8ab}} 
+\mbox{\hyperlink{class_alpide_ladder}{Alpide\+Ladder}} $\ast$ {\bfseries Get\+Ladder\+By\+Id} (Int\+\_\+t ladder\+ID)
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a42227b3585f6168c4fe20fc3743d2853}\label{class_test_beam_event_a42227b3585f6168c4fe20fc3743d2853}} 
+T\+Clones\+Array $\ast$ {\bfseries Get\+Array\+Ladders} () const
+\item 
+\mbox{\Hypertarget{class_test_beam_event_afd3a06a34d7c2ad20c18540055704f89}\label{class_test_beam_event_afd3a06a34d7c2ad20c18540055704f89}} 
+void {\bfseries Add\+Ladder} (\mbox{\hyperlink{class_alpide_ladder}{Alpide\+Ladder}} $\ast$ladder)
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a12430bdd449a4acb6c01a94729d5c774}\label{class_test_beam_event_a12430bdd449a4acb6c01a94729d5c774}} 
+void {\bfseries Set\+Event\+ID} (Int\+\_\+t event\+ID)
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a984f80797e7e21291c5259013e6d15f0}\label{class_test_beam_event_a984f80797e7e21291c5259013e6d15f0}} 
+void {\bfseries Set\+Telescope} (\mbox{\hyperlink{class_alpide_telescope}{Alpide\+Telescope}} $\ast$telescope)
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a8f69ed0160b21ddb51aeac4f1c8f362e}\label{class_test_beam_event_a8f69ed0160b21ddb51aeac4f1c8f362e}} 
+void {\bfseries Reset\+Event} ()
+\item 
+\mbox{\Hypertarget{class_test_beam_event_a3d25446f0ca8fb7a11a69d0084e5fdfc}\label{class_test_beam_event_a3d25446f0ca8fb7a11a69d0084e5fdfc}} 
+{\bfseries Class\+Def} (\mbox{\hyperlink{class_test_beam_event}{Test\+Beam\+Event}}, 1)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Int\+\_\+t \mbox{\hyperlink{class_test_beam_event_a1282488fec26d6b83901407e75378dda}{f\+Event\+ID}}
+\item 
+Int\+\_\+t \mbox{\hyperlink{class_test_beam_event_aca631326d6c05616a55cc16349c8b339}{f\+Number\+Of\+Ladders}}
+\item 
+T\+Clones\+Array $\ast$ \mbox{\hyperlink{class_test_beam_event_ae24662632a14f052415b9b7eb76e31d6}{f\+Array\+Ladders}}
+\item 
+\mbox{\hyperlink{class_alpide_telescope}{Alpide\+Telescope}} $\ast$ \mbox{\hyperlink{class_test_beam_event_ade24f88970804477d66d35d6e5acfb98}{f\+Telescope}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class for an event of M\+FT test beam. An event has an id, an array of ladders, and a telescope. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_test_beam_event_ae24662632a14f052415b9b7eb76e31d6}\label{class_test_beam_event_ae24662632a14f052415b9b7eb76e31d6}} 
+\index{Test\+Beam\+Event@{Test\+Beam\+Event}!f\+Array\+Ladders@{f\+Array\+Ladders}}
+\index{f\+Array\+Ladders@{f\+Array\+Ladders}!Test\+Beam\+Event@{Test\+Beam\+Event}}
+\subsubsection{\texorpdfstring{f\+Array\+Ladders}{fArrayLadders}}
+{\footnotesize\ttfamily T\+Clones\+Array$\ast$ Test\+Beam\+Event\+::f\+Array\+Ladders\hspace{0.3cm}{\ttfamily [private]}}
+
+A vector of Alpide\+Ladders can be used but tobjarray may be more flexible in the further analysis. \mbox{\Hypertarget{class_test_beam_event_a1282488fec26d6b83901407e75378dda}\label{class_test_beam_event_a1282488fec26d6b83901407e75378dda}} 
+\index{Test\+Beam\+Event@{Test\+Beam\+Event}!f\+Event\+ID@{f\+Event\+ID}}
+\index{f\+Event\+ID@{f\+Event\+ID}!Test\+Beam\+Event@{Test\+Beam\+Event}}
+\subsubsection{\texorpdfstring{f\+Event\+ID}{fEventID}}
+{\footnotesize\ttfamily Int\+\_\+t Test\+Beam\+Event\+::f\+Event\+ID\hspace{0.3cm}{\ttfamily [private]}}
+
+event ID number \mbox{\Hypertarget{class_test_beam_event_aca631326d6c05616a55cc16349c8b339}\label{class_test_beam_event_aca631326d6c05616a55cc16349c8b339}} 
+\index{Test\+Beam\+Event@{Test\+Beam\+Event}!f\+Number\+Of\+Ladders@{f\+Number\+Of\+Ladders}}
+\index{f\+Number\+Of\+Ladders@{f\+Number\+Of\+Ladders}!Test\+Beam\+Event@{Test\+Beam\+Event}}
+\subsubsection{\texorpdfstring{f\+Number\+Of\+Ladders}{fNumberOfLadders}}
+{\footnotesize\ttfamily Int\+\_\+t Test\+Beam\+Event\+::f\+Number\+Of\+Ladders\hspace{0.3cm}{\ttfamily [private]}}
+
+number of ladders in the event. Probably this will be common for all the events. \mbox{\Hypertarget{class_test_beam_event_ade24f88970804477d66d35d6e5acfb98}\label{class_test_beam_event_ade24f88970804477d66d35d6e5acfb98}} 
+\index{Test\+Beam\+Event@{Test\+Beam\+Event}!f\+Telescope@{f\+Telescope}}
+\index{f\+Telescope@{f\+Telescope}!Test\+Beam\+Event@{Test\+Beam\+Event}}
+\subsubsection{\texorpdfstring{f\+Telescope}{fTelescope}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_alpide_telescope}{Alpide\+Telescope}}$\ast$ Test\+Beam\+Event\+::f\+Telescope\hspace{0.3cm}{\ttfamily [private]}}
+
+A class member where the telescope tracks and chips are stored. Only w-\/one telescope is supposed to be in the setup 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/tarhini/\+Desktop/\+M\+F\+T/test\+Beam\+Analysis/my-\/\+M\+F\+T-\/\+Analysis/src/Test\+Beam\+Event.\+hpp\item 
+/\+Users/tarhini/\+Desktop/\+M\+F\+T/test\+Beam\+Analysis/my-\/\+M\+F\+T-\/\+Analysis/src/Test\+Beam\+Event.\+cpp\end{DoxyCompactItemize}

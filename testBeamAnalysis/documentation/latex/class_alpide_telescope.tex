@@ -1,0 +1,109 @@
+\hypertarget{class_alpide_telescope}{}\section{Alpide\+Telescope Class Reference}
+\label{class_alpide_telescope}\index{Alpide\+Telescope@{Alpide\+Telescope}}
+
+
+{\ttfamily \#include $<$Alpide\+Telescope.\+hpp$>$}
+
+Inheritance diagram for Alpide\+Telescope\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_alpide_telescope}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a08b55fa73a002383c979d3cb4b6cf92b}\label{class_alpide_telescope_a08b55fa73a002383c979d3cb4b6cf92b}} 
+Int\+\_\+t {\bfseries Get\+Telescope\+ID} () const
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_ad08cbfeba32729bb79dece254fb76fd9}\label{class_alpide_telescope_ad08cbfeba32729bb79dece254fb76fd9}} 
+Int\+\_\+t {\bfseries Get\+Number\+Of\+Chips} () const
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a619b34ba96df59daf0ddc85688138de5}\label{class_alpide_telescope_a619b34ba96df59daf0ddc85688138de5}} 
+\mbox{\hyperlink{class_alpide_chip}{Alpide\+Chip}} $\ast$ {\bfseries Get\+Chip} (Int\+\_\+t index)
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_af784289725c4f35046e7e9b9c72d6d2b}\label{class_alpide_telescope_af784289725c4f35046e7e9b9c72d6d2b}} 
+\mbox{\hyperlink{class_alpide_chip}{Alpide\+Chip}} $\ast$ {\bfseries Get\+Chip\+By\+ID} (Int\+\_\+t chip\+ID)
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_aa791e5afddf4cdd26ae5605856c3f6ce}\label{class_alpide_telescope_aa791e5afddf4cdd26ae5605856c3f6ce}} 
+T\+Clones\+Array $\ast$ {\bfseries Get\+Array\+Chips} () const
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a7a6acb8b7a6dc6884ebeee2abd5183af}\label{class_alpide_telescope_a7a6acb8b7a6dc6884ebeee2abd5183af}} 
+Int\+\_\+t {\bfseries Get\+Number\+Of\+Telescope\+Tracks} () const
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a4469548599474de64296350ee4619bfb}\label{class_alpide_telescope_a4469548599474de64296350ee4619bfb}} 
+\mbox{\hyperlink{class_telescope_track}{Telescope\+Track}} $\ast$ {\bfseries Get\+Telescope\+Track} (Int\+\_\+t index)
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_ad90f4b2850c1adaa40e87e1668ae6f6e}\label{class_alpide_telescope_ad90f4b2850c1adaa40e87e1668ae6f6e}} 
+T\+Clones\+Array $\ast$ {\bfseries Get\+Array\+Telescope\+Tracks} () const
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a8369dd2fbb5e8ef0f33b5e4353986b16}\label{class_alpide_telescope_a8369dd2fbb5e8ef0f33b5e4353986b16}} 
+void {\bfseries Set\+Telescope\+ID} (Int\+\_\+t telescope\+ID)
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a5c0d36c8e07025ea25e56daac3a5abe5}\label{class_alpide_telescope_a5c0d36c8e07025ea25e56daac3a5abe5}} 
+void {\bfseries Add\+Chip} (\mbox{\hyperlink{class_alpide_chip}{Alpide\+Chip}} $\ast$chip)
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a7057a801f20d2178e09930298a18b3f7}\label{class_alpide_telescope_a7057a801f20d2178e09930298a18b3f7}} 
+void {\bfseries Add\+Telescope\+Track} (\mbox{\hyperlink{class_telescope_track}{Telescope\+Track}} $\ast$track)
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a1fe138a228c478c7ec8f038b141ff29b}\label{class_alpide_telescope_a1fe138a228c478c7ec8f038b141ff29b}} 
+void {\bfseries Reset\+Telescope} ()
+\item 
+\mbox{\Hypertarget{class_alpide_telescope_a0389541f27e727fe4f6cbd096d156e89}\label{class_alpide_telescope_a0389541f27e727fe4f6cbd096d156e89}} 
+{\bfseries Class\+Def} (\mbox{\hyperlink{class_alpide_telescope}{Alpide\+Telescope}}, 1)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Int\+\_\+t \mbox{\hyperlink{class_alpide_telescope_a9b885e9e99ae303294ba02f3bacd049b}{f\+Telescope\+ID}}
+\item 
+Int\+\_\+t \mbox{\hyperlink{class_alpide_telescope_ada9d09d4e2e419ab4c8da7a3da8f6395}{f\+Number\+Of\+Chips}}
+\item 
+T\+Clones\+Array $\ast$ \mbox{\hyperlink{class_alpide_telescope_aa660d33d3521ba7aa21930120e05e0cd}{f\+Array\+Chips}}
+\item 
+Int\+\_\+t \mbox{\hyperlink{class_alpide_telescope_a5767a235a504a73169601284b7f2f55c}{f\+Number\+Of\+Telescope\+Tracks}}
+\item 
+T\+Clones\+Array $\ast$ \mbox{\hyperlink{class_alpide_telescope_a98c999ffa985cf1161d8e17a0a1b2b0d}{f\+Array\+Telescope\+Tracks}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class for the alpide telescope. The telescope contains many (single?) alpide chips. It also contains an array of telescope tracks that will be added after fitting the cluster of its chips. T\+O\+DO\+: This class was developped before knowing that the telescope used in the test beam is also based on alpide chips, one cab think of making a detector class that can be either ladder or a telescope. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_alpide_telescope_aa660d33d3521ba7aa21930120e05e0cd}\label{class_alpide_telescope_aa660d33d3521ba7aa21930120e05e0cd}} 
+\index{Alpide\+Telescope@{Alpide\+Telescope}!f\+Array\+Chips@{f\+Array\+Chips}}
+\index{f\+Array\+Chips@{f\+Array\+Chips}!Alpide\+Telescope@{Alpide\+Telescope}}
+\subsubsection{\texorpdfstring{f\+Array\+Chips}{fArrayChips}}
+{\footnotesize\ttfamily T\+Clones\+Array$\ast$ Alpide\+Telescope\+::f\+Array\+Chips\hspace{0.3cm}{\ttfamily [private]}}
+
+A vector of M\+T\+F\+Chips can be used but tobjarray may be more flexible in the further analysis. \mbox{\Hypertarget{class_alpide_telescope_a98c999ffa985cf1161d8e17a0a1b2b0d}\label{class_alpide_telescope_a98c999ffa985cf1161d8e17a0a1b2b0d}} 
+\index{Alpide\+Telescope@{Alpide\+Telescope}!f\+Array\+Telescope\+Tracks@{f\+Array\+Telescope\+Tracks}}
+\index{f\+Array\+Telescope\+Tracks@{f\+Array\+Telescope\+Tracks}!Alpide\+Telescope@{Alpide\+Telescope}}
+\subsubsection{\texorpdfstring{f\+Array\+Telescope\+Tracks}{fArrayTelescopeTracks}}
+{\footnotesize\ttfamily T\+Clones\+Array$\ast$ Alpide\+Telescope\+::f\+Array\+Telescope\+Tracks\hspace{0.3cm}{\ttfamily [private]}}
+
+array of tracks from the telescope \mbox{\Hypertarget{class_alpide_telescope_ada9d09d4e2e419ab4c8da7a3da8f6395}\label{class_alpide_telescope_ada9d09d4e2e419ab4c8da7a3da8f6395}} 
+\index{Alpide\+Telescope@{Alpide\+Telescope}!f\+Number\+Of\+Chips@{f\+Number\+Of\+Chips}}
+\index{f\+Number\+Of\+Chips@{f\+Number\+Of\+Chips}!Alpide\+Telescope@{Alpide\+Telescope}}
+\subsubsection{\texorpdfstring{f\+Number\+Of\+Chips}{fNumberOfChips}}
+{\footnotesize\ttfamily Int\+\_\+t Alpide\+Telescope\+::f\+Number\+Of\+Chips\hspace{0.3cm}{\ttfamily [private]}}
+
+number of chips in the telescope. \mbox{\Hypertarget{class_alpide_telescope_a5767a235a504a73169601284b7f2f55c}\label{class_alpide_telescope_a5767a235a504a73169601284b7f2f55c}} 
+\index{Alpide\+Telescope@{Alpide\+Telescope}!f\+Number\+Of\+Telescope\+Tracks@{f\+Number\+Of\+Telescope\+Tracks}}
+\index{f\+Number\+Of\+Telescope\+Tracks@{f\+Number\+Of\+Telescope\+Tracks}!Alpide\+Telescope@{Alpide\+Telescope}}
+\subsubsection{\texorpdfstring{f\+Number\+Of\+Telescope\+Tracks}{fNumberOfTelescopeTracks}}
+{\footnotesize\ttfamily Int\+\_\+t Alpide\+Telescope\+::f\+Number\+Of\+Telescope\+Tracks\hspace{0.3cm}{\ttfamily [private]}}
+
+number of telescope tracks. (Do we expect one track per event or what ?) \mbox{\Hypertarget{class_alpide_telescope_a9b885e9e99ae303294ba02f3bacd049b}\label{class_alpide_telescope_a9b885e9e99ae303294ba02f3bacd049b}} 
+\index{Alpide\+Telescope@{Alpide\+Telescope}!f\+Telescope\+ID@{f\+Telescope\+ID}}
+\index{f\+Telescope\+ID@{f\+Telescope\+ID}!Alpide\+Telescope@{Alpide\+Telescope}}
+\subsubsection{\texorpdfstring{f\+Telescope\+ID}{fTelescopeID}}
+{\footnotesize\ttfamily Int\+\_\+t Alpide\+Telescope\+::f\+Telescope\+ID\hspace{0.3cm}{\ttfamily [private]}}
+
+ID of the telescope as it appears in the raw file. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/tarhini/\+Desktop/\+M\+F\+T/test\+Beam\+Analysis/my-\/\+M\+F\+T-\/\+Analysis/src/Alpide\+Telescope.\+hpp\item 
+/\+Users/tarhini/\+Desktop/\+M\+F\+T/test\+Beam\+Analysis/my-\/\+M\+F\+T-\/\+Analysis/src/Alpide\+Telescope.\+cpp\end{DoxyCompactItemize}

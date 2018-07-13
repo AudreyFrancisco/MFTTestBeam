@@ -1,0 +1,17 @@
+*.root
+*.pdf
+*.blg
+*.d
+*.so
+*.log
+*.out
+*.pcm
+*/*.root
+*/*.pdf
+*/*.blg
+*/*.d
+*/*.so
+*/*.log
+*/*.out
+*/*.pcm
+Data/*root

@@ -1,0 +1,84 @@
+\hypertarget{class_alpide_ladder}{}\section{Alpide\+Ladder Class Reference}
+\label{class_alpide_ladder}\index{Alpide\+Ladder@{Alpide\+Ladder}}
+
+
+{\ttfamily \#include $<$Alpide\+Ladder.\+hpp$>$}
+
+Inheritance diagram for Alpide\+Ladder\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_alpide_ladder}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_a1eb68d4bca9be56454bb038050dcb636}\label{class_alpide_ladder_a1eb68d4bca9be56454bb038050dcb636}} 
+{\bfseries Alpide\+Ladder} (Int\+\_\+t ladder\+ID)
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_a094c6b21c41939556b6e2bc0e558a954}\label{class_alpide_ladder_a094c6b21c41939556b6e2bc0e558a954}} 
+Int\+\_\+t {\bfseries Get\+Ladder\+ID} () const
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_a6c897e52319dbf198e03399da9c2b006}\label{class_alpide_ladder_a6c897e52319dbf198e03399da9c2b006}} 
+Int\+\_\+t {\bfseries Get\+Number\+Of\+Chips} () const
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_a8c2000138b09528cf1b1a6237cd655d4}\label{class_alpide_ladder_a8c2000138b09528cf1b1a6237cd655d4}} 
+\mbox{\hyperlink{class_alpide_chip}{Alpide\+Chip}} $\ast$ {\bfseries Get\+Chip} (Int\+\_\+t index)
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_a14c0d9e30712e27aac188a07698ab98f}\label{class_alpide_ladder_a14c0d9e30712e27aac188a07698ab98f}} 
+\mbox{\hyperlink{class_alpide_chip}{Alpide\+Chip}} $\ast$ {\bfseries Get\+Chip\+By\+ID} (Int\+\_\+t chip\+ID)
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_a304b609bc2214bcaaa20ecc02059c087}\label{class_alpide_ladder_a304b609bc2214bcaaa20ecc02059c087}} 
+T\+Clones\+Array $\ast$ {\bfseries Get\+Array\+Chips} () const
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_a98ddc66d0678fd44709888bde9a48015}\label{class_alpide_ladder_a98ddc66d0678fd44709888bde9a48015}} 
+void {\bfseries Set\+Ladder\+ID} (Int\+\_\+t ladder\+ID)
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_a5d93d03f5253d92396e21e4f0cc6b309}\label{class_alpide_ladder_a5d93d03f5253d92396e21e4f0cc6b309}} 
+void {\bfseries Add\+Chip} (\mbox{\hyperlink{class_alpide_chip}{Alpide\+Chip}} $\ast$chip)
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_ad4538b416fc063cf2a48a5ba5df65122}\label{class_alpide_ladder_ad4538b416fc063cf2a48a5ba5df65122}} 
+void {\bfseries Reset\+Ladder} ()
+\item 
+\mbox{\Hypertarget{class_alpide_ladder_af6d0c45740ade18d0a8bde8a90898d5b}\label{class_alpide_ladder_af6d0c45740ade18d0a8bde8a90898d5b}} 
+{\bfseries Class\+Def} (\mbox{\hyperlink{class_alpide_ladder}{Alpide\+Ladder}}, 1)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Int\+\_\+t \mbox{\hyperlink{class_alpide_ladder_a5e51ffcfae1349f109896750a8d983d4}{f\+Ladder\+ID}}
+\item 
+Int\+\_\+t \mbox{\hyperlink{class_alpide_ladder_a90b3940b3c8b563115cc16efa27f4478}{f\+Number\+Of\+Chips}}
+\item 
+T\+Clones\+Array $\ast$ \mbox{\hyperlink{class_alpide_ladder_a9539572046b2da5582019ae4f0148428}{f\+Array\+Chips}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class for a M\+FT ladder. The ladder contains many Alpide\+Chips (2,3,or 4). In addition to the array of chips and their number, the ladder class has an a variable that indicates whether the ladder is on the face or the back side of the disk so that the numbering of the columns can be set. T\+O\+DO\+: This class was developped before knowing that the telescope used in the test beam is also based on alpide chips, one cab think of making a detector class that can be either ladder or a telescope. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_alpide_ladder_a9539572046b2da5582019ae4f0148428}\label{class_alpide_ladder_a9539572046b2da5582019ae4f0148428}} 
+\index{Alpide\+Ladder@{Alpide\+Ladder}!f\+Array\+Chips@{f\+Array\+Chips}}
+\index{f\+Array\+Chips@{f\+Array\+Chips}!Alpide\+Ladder@{Alpide\+Ladder}}
+\subsubsection{\texorpdfstring{f\+Array\+Chips}{fArrayChips}}
+{\footnotesize\ttfamily T\+Clones\+Array$\ast$ Alpide\+Ladder\+::f\+Array\+Chips\hspace{0.3cm}{\ttfamily [private]}}
+
+A vector of chips can be used but tobjarray may be more flexible in the further analysis. \mbox{\Hypertarget{class_alpide_ladder_a5e51ffcfae1349f109896750a8d983d4}\label{class_alpide_ladder_a5e51ffcfae1349f109896750a8d983d4}} 
+\index{Alpide\+Ladder@{Alpide\+Ladder}!f\+Ladder\+ID@{f\+Ladder\+ID}}
+\index{f\+Ladder\+ID@{f\+Ladder\+ID}!Alpide\+Ladder@{Alpide\+Ladder}}
+\subsubsection{\texorpdfstring{f\+Ladder\+ID}{fLadderID}}
+{\footnotesize\ttfamily Int\+\_\+t Alpide\+Ladder\+::f\+Ladder\+ID\hspace{0.3cm}{\ttfamily [private]}}
+
+This id must match the id system in the raw file \mbox{\Hypertarget{class_alpide_ladder_a90b3940b3c8b563115cc16efa27f4478}\label{class_alpide_ladder_a90b3940b3c8b563115cc16efa27f4478}} 
+\index{Alpide\+Ladder@{Alpide\+Ladder}!f\+Number\+Of\+Chips@{f\+Number\+Of\+Chips}}
+\index{f\+Number\+Of\+Chips@{f\+Number\+Of\+Chips}!Alpide\+Ladder@{Alpide\+Ladder}}
+\subsubsection{\texorpdfstring{f\+Number\+Of\+Chips}{fNumberOfChips}}
+{\footnotesize\ttfamily Int\+\_\+t Alpide\+Ladder\+::f\+Number\+Of\+Chips\hspace{0.3cm}{\ttfamily [private]}}
+
+number of chips in the ladder. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/tarhini/\+Desktop/\+M\+F\+T/test\+Beam\+Analysis/my-\/\+M\+F\+T-\/\+Analysis/src/Alpide\+Ladder.\+hpp\item 
+/\+Users/tarhini/\+Desktop/\+M\+F\+T/test\+Beam\+Analysis/my-\/\+M\+F\+T-\/\+Analysis/src/Alpide\+Ladder.\+cpp\end{DoxyCompactItemize}
