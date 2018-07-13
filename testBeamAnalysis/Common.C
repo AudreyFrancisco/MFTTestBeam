@@ -32,7 +32,7 @@ Double_t cInitYReso = 0.5;
 //Do not modify this block. These are the properties of the different available ladders in the test beam. The values are taken from:
 // https://twiki.cern.ch/twiki/pub/ALICE/MftFirstTestBeamDiskPositionning/Ladders_on_New_Disk.pdf
 Double_t cXDiskPosition = 75.375;
-Double_t cYDiskPosition = 42.5;
+Double_t cYDiskPosition = 34;
 enum cLadderIDEnum {k3025,k3028,k3029,k3014,k3010,k3008};
 const Double_t cGeomXSizeOfChip = 30.15;
 const Double_t cGeomYSizeOfChip = 17.0;
@@ -90,6 +90,12 @@ Int_t cMaxNHits = 1000;
 Bool_t cDoClustering = kTRUE;
 Bool_t cDrawLargeClusters = kTRUE;
 Int_t  cLimitOfLargeCluster = 30;
+Int_t cMaxNumberOfClusterPerEvent = 20;
+//-------------------------------------------------------------------------------------------------------------------------------------//
+
+//-------------------------------------------------------------------------------------------------------------------------------------//
+//Useful for test purpose. It will only analyse a fraction of the run event
+Double_t cFractionOfEvents = 0.01;
 //-------------------------------------------------------------------------------------------------------------------------------------//
 
 

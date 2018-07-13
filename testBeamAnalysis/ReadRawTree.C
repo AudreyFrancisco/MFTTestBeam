@@ -204,9 +204,10 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
 
   //-----------------------------------------------------------------------------------------------------------------//
   //Start looping over the trigger numbers. For each trigger, get the vector containing the indices of the different hits, if not all bad hits, update the chips and fill the event.
-  for(Int_t iTrigger=0;iTrigger<100000;iTrigger++){
+  Double_t numberOfTriggers = cFractionOfEvents*maxTriggerN;
+  for(Int_t iTrigger=1;iTrigger<numberOfTriggers;iTrigger++){
 
-    printf("Reading hit pixels ... %.0f%%%s", 100.*iTrigger/maxTriggerN, (iTrigger < maxTriggerN) ? "\r" : "\n");
+    printf("Reading rwa hit pixels ... %.0f%%%s", 100.*iTrigger/numberOfTriggers, (iTrigger < numberOfTriggers) ? "\r" : "\n");
     // cout<<endl;
 
     //This will clear the event.

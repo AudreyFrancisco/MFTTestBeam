@@ -55,6 +55,8 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
   TH1D ***histoHitMapY = new TH1D**[cNumberOfLadders];
   TH1D ***histoHitMapCol = new TH1D**[cNumberOfLadders];
   TH1D ***histoHitMapRow = new TH1D**[cNumberOfLadders];
+  TH1I ***histoNumberOfHitPerCluster = new TH1I**[cNumberOfLadders];
+  TH1I ***histoNumberOfClusterPerEvent = new TH1I**[cNumberOfLadders];
   TGraphErrors ***grClusters = new TGraphErrors**[cNumberOfLadders];
 
 
@@ -66,15 +68,23 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
     histoHitMapY[iLadder] = new TH1D*[numberOfChipsInLadder];
     histoHitMapCol[iLadder] = new TH1D*[numberOfChipsInLadder];
     histoHitMapRow[iLadder] = new TH1D*[numberOfChipsInLadder];
+    histoNumberOfHitPerCluster[iLadder] = new TH1I*[numberOfChipsInLadder];
+    histoNumberOfClusterPerEvent[iLadder] = new TH1I*[numberOfChipsInLadder];
     grClusters[iLadder] = new TGraphErrors*[numberOfChipsInLadder];
 
     for(int iChip=0;iChip<numberOfChipsInLadder;iChip++){
 
-      histoHitMap[iLadder][iChip] = new TH2I(Form("histoHitMap_Ladder%d_Chip%d",iLadder,iChip),"",cNumberOfColumnsInChip,0,cNumberOfColumnsInChip,cNumberOfRowsInChip,0,cNumberOfRowsInChip);
+      histoHitMap[iLadder][iChip] = new TH2I(Form("histoHitMap_Ladder%d_Chip%d",cLadderID[iLadder],cTopChipId-iChip),"",cNumberOfColumnsInChip,0,cNumberOfColumnsInChip,cNumberOfRowsInChip,0,cNumberOfRowsInChip);
       histoHitMap[iLadder][iChip]->Sumw2();
 
-      histoHitMapXY[iLadder][iChip] = new TH2I(Form("histoHitMapXY_Ladder%d_Chip%d",iLadder,iChip),"",cNumberOfRowsInChip,cYPositionOfFirstChipInLadder[iLadder]-0.5*cChipYSize,cYPositionOfFirstChipInLadder[iLadder]+0.5*cChipYSize,cNumberOfColumnsInChip,-1*iChip*cChipXSize+cXPositionOfFirstChipInLadder[iLadder]-0.5*cChipXSize,-1*iChip*cChipXSize+cXPositionOfFirstChipInLadder[iLadder]+0.5*cChipXSize);
+      histoHitMapXY[iLadder][iChip] = new TH2I(Form("histoHitMapXY_Ladder%d_Chip%d",cLadderID[iLadder],cTopChipId-iChip),"",cNumberOfRowsInChip,cYPositionOfFirstChipInLadder[iLadder]-0.5*cChipYSize,cYPositionOfFirstChipInLadder[iLadder]+0.5*cChipYSize,cNumberOfColumnsInChip,-1*iChip*cChipXSize+cXPositionOfFirstChipInLadder[iLadder]-0.5*cChipXSize,-1*iChip*cChipXSize+cXPositionOfFirstChipInLadder[iLadder]+0.5*cChipXSize);
       histoHitMapXY[iLadder][iChip]->Sumw2();
+
+      histoNumberOfHitPerCluster[iLadder][iChip] = new TH1I(Form("histoNumberOfHitPerCluster_Ladder%d_Chip%d",cLadderID[iLadder],cTopChipId-iChip),"",cMaxNumberOfHitsPerCluster,0,cMaxNumberOfHitsPerCluster);
+      histoNumberOfHitPerCluster[iLadder][iChip]->Sumw2();
+
+      histoNumberOfClusterPerEvent[iLadder][iChip] = new TH1I(Form("histoNumberOfClusterPerEvent_Ladder%d_Chip%d",cLadderID[iLadder],cTopChipId-iChip),"",cMaxNumberOfClusterPerEvent,0,cMaxNumberOfClusterPerEvent);
+      histoNumberOfClusterPerEvent[iLadder][iChip]->Sumw2();
 
       //also define set of chips to be saved and cumulated in order to be used further for drawing purpose.
       grClusters[iLadder][iChip] = new TGraphErrors(1);
@@ -92,6 +102,8 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
   TH1D *histoHitMapY_Telescope[cNumberOfChipsInTelescope];
   TH1D *histoHitMapCol_Telescope[cNumberOfChipsInTelescope];
   TH1D *histoHitMapRow_Telescope[cNumberOfChipsInTelescope];
+  TH1I *histoNumberOfHitPerCluster_Telescope[cNumberOfChipsInTelescope];
+  TH1I *histoNumberOfClusterPerEvent_Telescope[cNumberOfChipsInTelescope];
   TGraphErrors *grClusters_Telescope[cNumberOfChipsInTelescope];
 
   for(int iChip=0;iChip<cNumberOfChipsInTelescope;iChip++){
@@ -101,6 +113,12 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
 
     histoHitMapXY_Telescope[iChip] = new TH2I(Form("histoHitMapXY_Telescope_Chip%d",cTelescopeChipID[iChip]),"",cNumberOfRowsInChip,cYPositionOfChipsInTelescope[iChip]-0.5*cChipYSize,cYPositionOfChipsInTelescope[iChip]+0.5*cChipYSize,cNumberOfColumnsInChip,cXPositionOfChipsInTelescope[iChip]-0.5*cChipXSize,cXPositionOfChipsInTelescope[iChip]+0.5*cChipXSize);
     histoHitMapXY_Telescope[iChip]->Sumw2();
+
+    histoNumberOfHitPerCluster_Telescope[iChip] = new TH1I(Form("histoNumberOfHitPerCluster_Telescope_Chip%d",cTelescopeChipID[iChip]),"",cMaxNumberOfHitsPerCluster,0,cMaxNumberOfHitsPerCluster);
+    histoNumberOfHitPerCluster_Telescope[iChip]->Sumw2();
+
+    histoNumberOfClusterPerEvent_Telescope[iChip] = new TH1I(Form("histoNumberOfClusterPerEvent_Telescope_Chip%d",cTelescopeChipID[iChip]),"",cMaxNumberOfClusterPerEvent,0,cMaxNumberOfClusterPerEvent);
+    histoNumberOfClusterPerEvent_Telescope[iChip]->Sumw2();
 
     //also define set of chips to be saved and cumulated in order to be used further for drawing purpose.
     grClusters_Telescope[iChip] = new TGraphErrors(1);
@@ -131,8 +149,10 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
           histoHitMapXY[iLadder][iChip]->Fill(pixel->GetYCoordinate(),pixel->GetXCoordinate());
         }
         Int_t numberOfClusters = chip->GetNumberOfClusters();
+        histoNumberOfClusterPerEvent[iLadder][iChip]->Fill(numberOfClusters);
         for(int iCluster=0;iCluster<numberOfClusters;iCluster++){
           AlpideCluster *cluster = chip->GetCluster(iCluster);
+          histoNumberOfHitPerCluster[iLadder][iChip]->Fill(cluster->GetNumberOfPixels());
           if(cluster->GetNumberOfPixels() < cLimitOfLargeCluster) continue;
           //Add the cluster to the TGraphErrors to be drawn at the end:
           Int_t numberOfPointsInGraph = grClusters[iLadder][iChip]->GetN();
@@ -156,8 +176,10 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
         histoHitMapXY_Telescope[iChip]->Fill(pixel->GetYCoordinate(),pixel->GetXCoordinate());
       }
       Int_t numberOfClusters = chip->GetNumberOfClusters();
+      histoNumberOfClusterPerEvent_Telescope[iChip]->Fill(numberOfClusters);
       for(int iCluster=0;iCluster<numberOfClusters;iCluster++){
         AlpideCluster *cluster = chip->GetCluster(iCluster);
+        histoNumberOfHitPerCluster_Telescope[iChip]->Fill(cluster->GetNumberOfPixels());
         if(cluster->GetNumberOfPixels() < cLimitOfLargeCluster) continue;
         //Add the cluster to the TGraphErrors to be drawn at the end:
         Int_t numberOfPointsInGraph = grClusters_Telescope[iChip]->GetN();
@@ -178,44 +200,56 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
   TCanvas* canHitMapsXY[cNumberOfLadders];
   TCanvas* canHitMapsX[cNumberOfLadders];
   TCanvas* canHitMapsY[cNumberOfLadders];
+  TCanvas* canNumberOfHitsPerCluster[cNumberOfLadders];
+  TCanvas* canNumberOfClusterPerEvent[cNumberOfLadders];
 
   for(int iLadder=0;iLadder<cNumberOfLadders;iLadder++){
     int numberOfChipsInLadder = cNumberOfChipsInLadder[iLadder];
 
-    canHitMaps[iLadder] = new TCanvas(Form("canHitMaps_Ladder%d",iLadder),"canHitMaps",1000,1000);
+    canHitMaps[iLadder] = new TCanvas(Form("canHitMaps_Ladder%d",cLadderID[iLadder]),"canHitMaps",1000,1000);
     canHitMaps[iLadder]->Divide(1,numberOfChipsInLadder);
     SetCanvasStyle(canHitMaps[iLadder]);
     canHitMaps[iLadder]->SetFillColor(kGray);
 
-    canHitMapsCol[iLadder] = new TCanvas(Form("canHitMapsCol_Ladder%d",iLadder),"canHitMaps",1000,1000);
+    canHitMapsCol[iLadder] = new TCanvas(Form("canHitMapsCol_Ladder%d",cLadderID[iLadder]),"canHitMaps",1000,1000);
     canHitMapsCol[iLadder]->Divide(1,numberOfChipsInLadder);
     SetCanvasStyle(canHitMapsCol[iLadder]);
     canHitMapsCol[iLadder]->SetFillColor(kGray);
 
-    canHitMapsRow[iLadder] = new TCanvas(Form("canHitMapsRow_Ladder%d",iLadder),"canHitMaps",1000,1000);
+    canHitMapsRow[iLadder] = new TCanvas(Form("canHitMapsRow_Ladder%d",cLadderID[iLadder]),"canHitMaps",1000,1000);
     canHitMapsRow[iLadder]->Divide(1,numberOfChipsInLadder);
     SetCanvasStyle(canHitMapsRow[iLadder]);
     canHitMapsRow[iLadder]->SetFillColor(kGray);
 
-    canHitMapsXY[iLadder] = new TCanvas(Form("canHitMapsXY_Ladder%d",iLadder),"canHitMaps",500,1000);
+    canHitMapsXY[iLadder] = new TCanvas(Form("canHitMapsXY_Ladder%d",cLadderID[iLadder]),"canHitMaps",500,1000);
     canHitMapsXY[iLadder]->Divide(1,numberOfChipsInLadder);
     SetCanvasStyle(canHitMapsXY[iLadder]);
     canHitMapsXY[iLadder]->SetFillColor(kGray);
 
-    canHitMapsX[iLadder] = new TCanvas(Form("canHitMapsX_Ladder%d",iLadder),"canHitMaps",1000,1000);
+    canHitMapsX[iLadder] = new TCanvas(Form("canHitMapsX_Ladder%d",cLadderID[iLadder]),"canHitMaps",1000,1000);
     canHitMapsX[iLadder]->Divide(1,numberOfChipsInLadder);
     SetCanvasStyle(canHitMapsX[iLadder]);
     canHitMapsX[iLadder]->SetFillColor(kGray);
 
-    canHitMapsY[iLadder] = new TCanvas(Form("canHitMapsY_Ladder%d",iLadder),"canHitMaps",1000,1000);
+    canHitMapsY[iLadder] = new TCanvas(Form("canHitMapsY_Ladder%d",cLadderID[iLadder]),"canHitMaps",1000,1000);
     canHitMapsY[iLadder]->Divide(1,numberOfChipsInLadder);
     SetCanvasStyle(canHitMapsY[iLadder]);
     canHitMapsY[iLadder]->SetFillColor(kGray);
 
+    canNumberOfHitsPerCluster[iLadder] = new TCanvas(Form("canNumberOfHitsPerCluster_Ladder%d",cLadderID[iLadder]),"canNumberOfHitsPerCluster",1000,1000);
+    canNumberOfHitsPerCluster[iLadder]->Divide(1,numberOfChipsInLadder);
+    SetCanvasStyle(canNumberOfHitsPerCluster[iLadder]);
+    canNumberOfHitsPerCluster[iLadder]->SetFillColor(kGray);
+
+    canNumberOfClusterPerEvent[iLadder] = new TCanvas(Form("canNumberOfClusterPerEvent_Ladder%d",cLadderID[iLadder]),"canNumberOfClusterPerEvent",1000,1000);
+    canNumberOfClusterPerEvent[iLadder]->Divide(1,numberOfChipsInLadder);
+    SetCanvasStyle(canNumberOfClusterPerEvent[iLadder]);
+    canNumberOfClusterPerEvent[iLadder]->SetFillColor(kGray);
+
 
     for(int iChip=0;iChip<numberOfChipsInLadder;iChip++){
       canHitMaps[iLadder]->cd(iChip+1);
-      histoHitMap[iLadder][iChip]->SetTitle(Form("Ladder %d, Chip %d, %1.1f entries",iLadder,cTopChipId-iChip,histoHitMap[iLadder][iChip]->GetEntries()));
+      histoHitMap[iLadder][iChip]->SetTitle(Form("Ladder %d, Chip %d, %1.1f entries",cLadderID[iLadder],cTopChipId-iChip,histoHitMap[iLadder][iChip]->GetEntries()));
       histoHitMap[iLadder][iChip]->GetXaxis()->SetLabelSize(0.05);
       histoHitMap[iLadder][iChip]->GetXaxis()->SetTitleSize(0.05);
       histoHitMap[iLadder][iChip]->GetXaxis()->SetTitleOffset(1);
@@ -240,7 +274,7 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
       histoHitMapRow[iLadder][iChip]->Draw();
 
       canHitMapsXY[iLadder]->cd(iChip+1);
-      histoHitMapXY[iLadder][iChip]->SetTitle(Form("Ladder %d, Chip %d, %1.1f entries",iLadder,cTopChipId-iChip,histoHitMapXY[iLadder][iChip]->GetEntries()));
+      histoHitMapXY[iLadder][iChip]->SetTitle(Form("Ladder %d, Chip %d, %1.1f entries",cLadderID[iLadder],cTopChipId-iChip,histoHitMapXY[iLadder][iChip]->GetEntries()));
       histoHitMapXY[iLadder][iChip]->GetXaxis()->SetLabelSize(0.05);
       histoHitMapXY[iLadder][iChip]->GetXaxis()->SetTitleSize(0.05);
       histoHitMapXY[iLadder][iChip]->GetXaxis()->SetTitleOffset(1);
@@ -258,6 +292,30 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
       canHitMapsY[iLadder]->cd(iChip+1);
       histoHitMapY[iLadder][iChip] =  histoHitMapXY[iLadder][iChip]->ProjectionX(Form("histoHitMapY_Ladder%d_Chip%d",iLadder,cTopChipId-iChip));
       histoHitMapY[iLadder][iChip]->Draw();
+
+      canNumberOfHitsPerCluster[iLadder]->cd(iChip+1);
+      histoNumberOfHitPerCluster[iLadder][iChip]->SetTitle(Form("Ladder %d, Chip %d, %1.1f entries",cLadderID[iLadder],cTopChipId-iChip,histoNumberOfHitPerCluster[iLadder][iChip]->GetEntries()));
+      histoNumberOfHitPerCluster[iLadder][iChip]->GetXaxis()->SetLabelSize(0.05);
+      histoNumberOfHitPerCluster[iLadder][iChip]->GetXaxis()->SetTitleSize(0.05);
+      histoNumberOfHitPerCluster[iLadder][iChip]->GetXaxis()->SetTitleOffset(1);
+      histoNumberOfHitPerCluster[iLadder][iChip]->GetXaxis()->SetTitle("N_{pixels}/Cluster");
+      histoNumberOfHitPerCluster[iLadder][iChip]->GetYaxis()->SetLabelSize(0.05);
+      histoNumberOfHitPerCluster[iLadder][iChip]->GetYaxis()->SetTitleSize(0.05);
+      histoNumberOfHitPerCluster[iLadder][iChip]->GetYaxis()->SetTitleOffset(1);
+      histoNumberOfHitPerCluster[iLadder][iChip]->GetYaxis()->SetTitle("Counts");
+      histoNumberOfHitPerCluster[iLadder][iChip]->Draw("");
+
+      canNumberOfClusterPerEvent[iLadder]->cd(iChip+1);
+      histoNumberOfClusterPerEvent[iLadder][iChip]->SetTitle(Form("Ladder %d, Chip %d, %1.1f entries",cLadderID[iLadder],cTopChipId-iChip,histoNumberOfClusterPerEvent[iLadder][iChip]->GetEntries()));
+      histoNumberOfClusterPerEvent[iLadder][iChip]->GetXaxis()->SetLabelSize(0.05);
+      histoNumberOfClusterPerEvent[iLadder][iChip]->GetXaxis()->SetTitleSize(0.05);
+      histoNumberOfClusterPerEvent[iLadder][iChip]->GetXaxis()->SetTitleOffset(1);
+      histoNumberOfClusterPerEvent[iLadder][iChip]->GetXaxis()->SetTitle("N_{pixels}/Cluster");
+      histoNumberOfClusterPerEvent[iLadder][iChip]->GetYaxis()->SetLabelSize(0.05);
+      histoNumberOfClusterPerEvent[iLadder][iChip]->GetYaxis()->SetTitleSize(0.05);
+      histoNumberOfClusterPerEvent[iLadder][iChip]->GetYaxis()->SetTitleOffset(1);
+      histoNumberOfClusterPerEvent[iLadder][iChip]->GetYaxis()->SetTitle("Counts");
+      histoNumberOfClusterPerEvent[iLadder][iChip]->Draw("");
 
     }
 
@@ -293,6 +351,16 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
   canHitMapsY_Telescope->Divide(1,cNumberOfChipsInTelescope);
   SetCanvasStyle(canHitMapsY_Telescope);
   canHitMapsY_Telescope->SetFillColor(kYellow-10);
+
+  TCanvas* canNumberOfHitsPerCluster_Telescope = new TCanvas(Form("canNumberOfHitsPerCluster_Telescope"),"canNumberOfHitsPerCluster_Telescope",1000,1000);
+  canNumberOfHitsPerCluster_Telescope->Divide(1,cNumberOfChipsInTelescope);
+  SetCanvasStyle(canNumberOfHitsPerCluster_Telescope);
+  canNumberOfHitsPerCluster_Telescope->SetFillColor(kYellow-10);
+
+  TCanvas* canNumberOfClusterPerEvent_Telescope = new TCanvas(Form("canNumberOfClusterPerEvent_Telescope"),"canNumberOfClusterPerEvent_Telescope",1000,1000);
+  canNumberOfClusterPerEvent_Telescope->Divide(1,cNumberOfChipsInTelescope);
+  SetCanvasStyle(canNumberOfClusterPerEvent_Telescope);
+  canNumberOfClusterPerEvent_Telescope->SetFillColor(kYellow-10);
 
   for(int iChip=0;iChip<cNumberOfChipsInTelescope;iChip++){
     canHitMaps_Telescope->cd(iChip+1);
@@ -342,6 +410,30 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
     histoHitMapY_Telescope[iChip] =  histoHitMapXY_Telescope[iChip]->ProjectionX(Form("histoHitMapY_Telescope_Chip%d",cTelescopeChipID[iChip]));
     histoHitMapY_Telescope[iChip]->Draw();
 
+    canNumberOfHitsPerCluster_Telescope->cd(iChip+1);
+    histoNumberOfHitPerCluster_Telescope[iChip]->SetTitle(Form("Chip %d, %1.1f entries",cTelescopeChipID[iChip],histoNumberOfHitPerCluster_Telescope[iChip]->GetEntries()));
+    histoNumberOfHitPerCluster_Telescope[iChip]->GetXaxis()->SetLabelSize(0.05);
+    histoNumberOfHitPerCluster_Telescope[iChip]->GetXaxis()->SetTitleSize(0.05);
+    histoNumberOfHitPerCluster_Telescope[iChip]->GetXaxis()->SetTitleOffset(1);
+    histoNumberOfHitPerCluster_Telescope[iChip]->GetXaxis()->SetTitle("N_{pixels}/Cluster");
+    histoNumberOfHitPerCluster_Telescope[iChip]->GetYaxis()->SetLabelSize(0.05);
+    histoNumberOfHitPerCluster_Telescope[iChip]->GetYaxis()->SetTitleSize(0.05);
+    histoNumberOfHitPerCluster_Telescope[iChip]->GetYaxis()->SetTitleOffset(1);
+    histoNumberOfHitPerCluster_Telescope[iChip]->GetYaxis()->SetTitle("Counts");
+    histoNumberOfHitPerCluster_Telescope[iChip]->Draw("");
+
+    canNumberOfClusterPerEvent_Telescope->cd(iChip+1);
+    histoNumberOfClusterPerEvent_Telescope[iChip]->SetTitle(Form("Chip %d, %1.1f entries",cTelescopeChipID[iChip],histoNumberOfClusterPerEvent_Telescope[iChip]->GetEntries()));
+    histoNumberOfClusterPerEvent_Telescope[iChip]->GetXaxis()->SetLabelSize(0.05);
+    histoNumberOfClusterPerEvent_Telescope[iChip]->GetXaxis()->SetTitleSize(0.05);
+    histoNumberOfClusterPerEvent_Telescope[iChip]->GetXaxis()->SetTitleOffset(1);
+    histoNumberOfClusterPerEvent_Telescope[iChip]->GetXaxis()->SetTitle("N_{pixels}/Cluster");
+    histoNumberOfClusterPerEvent_Telescope[iChip]->GetYaxis()->SetLabelSize(0.05);
+    histoNumberOfClusterPerEvent_Telescope[iChip]->GetYaxis()->SetTitleSize(0.05);
+    histoNumberOfClusterPerEvent_Telescope[iChip]->GetYaxis()->SetTitleOffset(1);
+    histoNumberOfClusterPerEvent_Telescope[iChip]->GetYaxis()->SetTitle("Counts");
+    histoNumberOfClusterPerEvent_Telescope[iChip]->Draw("");
+
 
   }
 
@@ -351,11 +443,13 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
   //An array of directories per ladder
   TDirectory *ladderDirectory[cNumberOfLadders];
   for(Int_t iLadder=0;iLadder<cNumberOfLadders;iLadder++){
-    ladderDirectory[iLadder] = outputHistosFile->mkdir(Form("Ladder_%d",iLadder));
+    ladderDirectory[iLadder] = outputHistosFile->mkdir(Form("Ladder_%d",cLadderID[iLadder]));
     ladderDirectory[iLadder]->cd();
     for(Int_t iChip=0;iChip<cNumberOfChipsInLadder[iLadder];iChip++){
       histoHitMap[iLadder][iChip]->Write();
       histoHitMapXY[iLadder][iChip]->Write();
+      histoNumberOfHitPerCluster[iLadder][iChip]->Write();
+      histoNumberOfClusterPerEvent[iLadder][iChip]->Write();
     }
     canHitMaps[iLadder]->Write();
     canHitMapsXY[iLadder]->Write();
@@ -363,6 +457,8 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
     canHitMapsRow[iLadder]->Write();
     canHitMapsX[iLadder]->Write();
     canHitMapsY[iLadder]->Write();
+    canNumberOfHitsPerCluster[iLadder]->Write();
+    canNumberOfClusterPerEvent[iLadder]->Write();
   }
 
   //A directory for the telescope histograms
@@ -375,6 +471,8 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
     histoHitMapY_Telescope[iChip]->Write();
     histoHitMapCol_Telescope[iChip]->Write();
     histoHitMapRow_Telescope[iChip]->Write();
+    histoNumberOfHitPerCluster_Telescope[iChip]->Write();
+    histoNumberOfClusterPerEvent_Telescope[iChip]->Write();
   }
   canHitMaps_Telescope->Write();
   canHitMapsXY_Telescope->Write();
@@ -382,6 +480,8 @@ void DrawHitMaps(TString inputFileNameHits = "Results_OnlyHits.root",TString inp
   canHitMapsRow_Telescope->Write();
   canHitMapsX_Telescope->Write();
   canHitMapsY_Telescope->Write();
+  canNumberOfHitsPerCluster_Telescope->Write();
+  canNumberOfClusterPerEvent_Telescope->Write();
 
   outputHistosFile->Close();
 

@@ -134,7 +134,6 @@ void eve(TString outputDirectory = "TestRun", TString inputFileName = "TestBeamE
     clusterSet->SetMarkerSize(0.4);
     for(Int_t iCluster=0;iCluster<numberOfClusterInChip;iCluster++){
       AlpideCluster *cluster = chip->GetCluster(iCluster);
-      cout<<"cluster"<<endl;
       //Draw the cluster after getting the x,y,z coordinates
       clusterSet->SetPoint(iCluster, cluster->GetCenterOfMassY(),cluster->GetCenterOfMassX(), cZPositionOfChipsInTelescope[iChip]);
     }
