@@ -134,6 +134,54 @@ Int_t AlpideCluster::GetTotalSpread() {
     return max-min;
   }
 
+  // get cluster xmax
+  //______________________________________________________________________
+  Double_t AlpideCluster::GetXMax() {
+    Double_t max = -99999;
+    Double_t pixelX;
+    for(Int_t iPixel=0; iPixel<fNumberOfPixels; iPixel++) {
+      pixelX = GetPixel(iPixel)->GetXCoordinate();
+      if(pixelX > max) max = pixelX;
+    }
+    return max;
+  }
+
+  // get cluster ymax
+  //______________________________________________________________________
+  Double_t AlpideCluster::GetYMax() {
+    Double_t max = -99999;
+    Double_t pixelY;
+    for(Int_t iPixel=0; iPixel<fNumberOfPixels; iPixel++) {
+      pixelY = GetPixel(iPixel)->GetYCoordinate();
+      if(pixelY > max) max = pixelY;
+    }
+    return max;
+  }
+
+  // get cluster col min
+  //______________________________________________________________________
+  Int_t AlpideCluster::GetColMin() {
+    Int_t min = 99999;
+    Int_t pixelCol;
+    for(Int_t iPixel=0; iPixel<fNumberOfPixels; iPixel++) {
+      pixelCol = GetPixel(iPixel)->GetCol();
+      if(pixelCol < min) min = pixelCol;
+    }
+    return min;
+  }
+
+  // get cluster row min
+  //______________________________________________________________________
+  Int_t AlpideCluster::GetRowMin() {
+    Int_t min = 99999;
+    Int_t pixelRow;
+    for(Int_t iPixel=0; iPixel<fNumberOfPixels; iPixel++) {
+      pixelRow = GetPixel(iPixel)->GetRow();
+      if(pixelRow < min) min = pixelRow;
+    }
+    return min;
+  }
+
   // add Hit pixel to the chip
   //______________________________________________________________________
   void AlpideCluster::AddPixel(AlpidePixel *pixel) {

@@ -44,6 +44,10 @@ public:
     Double_t         GetCenterOfMassY();
     Double_t         GetSpreadX();
     Double_t         GetSpreadY();
+    Double_t         GetXMax();
+    Double_t         GetYMax();
+    Int_t         GetColMin();
+    Int_t         GetRowMin();
 
     //setters
     void            SetCenterOfMassX(Double_t x) {fCenterOfMassX = x;}
