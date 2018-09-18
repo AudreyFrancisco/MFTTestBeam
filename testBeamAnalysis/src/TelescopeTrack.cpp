@@ -95,4 +95,5 @@ void TelescopeTrack::FitTrack(){
   if(fPrintResults){
     fitResult.Print(std::cout);
   }
+  SetParams(fitResult.Parameter(0),fitResult.Parameter(1),fitResult.Parameter(2),fitResult.Parameter(3));
 }

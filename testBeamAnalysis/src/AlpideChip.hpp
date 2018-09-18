@@ -24,12 +24,11 @@ private:
     Float_t	  fChipPositionX; 		// x chip position of the bottom left (x_min and y_min of the rectangle) corner in the lab frame in mm
     Float_t	  fChipPositionY;		  // y ////////////////////////////////////////////////////
     Float_t 	fChipPositionZ; 		// z ///////////////////////////////////////////////////
+    Float_t   fTheta;             //Chip rotation around the Z-axis
     Float_t	  fChipSizeX;		  // x size of the sensor in mm
     Float_t 	fChipSizeY; 		// y ////////////////////////
     Float_t	  fChipInitResoX;		  // distance to search for a track in mm
     Float_t 	fChipInitResoY; 		// distance to search for a track in mm
-    Float_t	  fMisAlignX;		  // misalignment of the chip in the x direction
-    Float_t 	fMisAlignY; 		// misalignment of the chip in the y direction
     Int_t     fOriginCol;     //The col number of the geometrical origion of the chip, taken as the top left corner
     Int_t     fOriginRow;     //The col number of the geometrical origion of the chip, taken as the top left corner
     Double_t  fPixelSizeX;    //in mm
@@ -63,12 +62,11 @@ public:
     Float_t 	    GetPositionX    		() const {return fChipPositionX;}
     Float_t 	    GetPositionY    		() const {return fChipPositionY;}
     Float_t 	    GetPositionZ	 	  	() const {return fChipPositionZ;}
+    Float_t 	    GetTHeta	     	  	() const {return fTheta;}
     Float_t 	    GetSizeX    		() const {return fChipSizeX;}
     Float_t 	    GetSizeY    		() const {return fChipSizeY;}
     Float_t 	    GetInitResoX    		() const {return fChipInitResoX;}
     Float_t 	    GetInitResoY    		() const {return fChipInitResoY;}
-    Float_t 	    GetMisAlignX    		() const {return fMisAlignX;}
-    Float_t 	    GetMisAlignY    		() const {return fMisAlignY;}
     Int_t 	      GetOriginCol   		() const {return fOriginCol;}
     Int_t       	GetOriginRow   		() const {return fOriginRow;}
     Double_t 	      GetPixelSizeX   		() const {return fPixelSizeX;}
@@ -85,12 +83,11 @@ public:
     void SetPositionX    	 (Float_t xPosition)		 {fChipPositionX=xPosition;}
     void SetPositionY    	 (Float_t yPosition)   	 {fChipPositionY=yPosition;}
     void SetPositionZ    	 (Float_t zPosition)	 	 {fChipPositionZ=zPosition;}
+    void SetTheta       	 (Float_t theta)	 	 {fTheta=theta;}
     void SetSizeX    	 (Float_t xSize)		 {fChipSizeX=xSize;}
     void SetSizeY    	 (Float_t ySize)   	 {fChipSizeY=ySize;}
     void SetInitResoX    	 (Float_t xReso)		 {fChipInitResoX=xReso;}
     void SetInitResoY    	 (Float_t yReso)   	 {fChipInitResoY=yReso;}
-    void SetMisAlignX    	 (Float_t xMisAlign)		 {fMisAlignX=xMisAlign;}
-    void SetMisAlignY    	 (Float_t yMisAlign)   	 {fMisAlignY=yMisAlign;}
     void SetOriginCol   	 (Int_t col)	 {fOriginCol=col;}
     void SetOriginRow   	 (Int_t row)	 {fOriginRow=row;}
     void SetPixelSizeX   	 (Int_t xSize)	 {fPixelSizeX=xSize;}
@@ -103,6 +100,7 @@ public:
     void AddHitPixel	 (AlpidePixel *pixel);	// add hit pixel to chip
     Bool_t IsAPointInACluster(Float_t xCoordinate, Float_t yCoordinate, Int_t &clusterIndex);//See TODO above
     void ClustersRecInChip();
+    void PrintRepeatedPixels();
     void ResetChip		 ();
 
 

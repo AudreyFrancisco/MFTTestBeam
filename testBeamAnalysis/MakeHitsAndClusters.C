@@ -37,26 +37,31 @@ void MakeHitsAndClusters(TString inputFileName = "TestBeamEventTree.root", TStri
   //Create a new file to save the new tree which is a copy of the original but with adding clusters.
   TFile *outputFile = new TFile(Form("%s/%s",outputDirectory.Data(),outputFileName.Data()),"recreate");
   TTree *treeEventsWithClusters = testBeamEventTree->CloneTree(0);
+  AlpideLadder *ladder;
+  AlpideChip *chip;
+  AlpideTelescope *telescope;
 
   for(int iEvent=0;iEvent<numberOfEntries;iEvent++){
-    printf("Making hits and clusters  ... %.0f%%%s", 100.*iEvent/numberOfEntries, (iEvent < numberOfEntries) ? "\r" : "\n");
+    if(iEvent%100 == 0) printf("Making hits and clusters  ... %.0f%%%s", 100.*iEvent/numberOfEntries, (iEvent < numberOfEntries) ? "\r" : "\n");
+    // if(iEvent > 420000) continue;
+    // if(iEvent%10000 == 0) cout<<iEvent<<"  ";
 
     testBeamEventTree->GetEntry(iEvent);
 
     //Loop over the chips in the ladders and reconstruct their clusters
     for(int iLadder=0;iLadder<cNumberOfLadders;iLadder++){
-      AlpideLadder *ladder = event->GetLadder(iLadder);
+      ladder = event->GetLadder(iLadder);
       Int_t numberOfChipsInLadder = ladder->GetNumberOfChips();
       for(int iChip=0;iChip<numberOfChipsInLadder;iChip++){
-        AlpideChip *chip = ladder->GetChip(iChip);
-        if(cDoClustering) chip->ClustersRecInChip();
+        chip = ladder->GetChip(iChip);
+        chip->ClustersRecInChip();
       }
     }
 
     //Loop over the chips in the telescop and reconstruct their clusters
-    AlpideTelescope *telescope = event->GetTelescope();
+    telescope = event->GetTelescope();
     for(int iChip=0;iChip<cNumberOfChipsInTelescope;iChip++){
-      AlpideChip *chip = telescope->GetChip(iChip);
+      chip = telescope->GetChip(iChip);
       if(cDoClustering) chip->ClustersRecInChip();
     }
 

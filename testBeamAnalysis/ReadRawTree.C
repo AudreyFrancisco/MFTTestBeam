@@ -8,6 +8,7 @@
 #include "TChain.h"
 #include "TROOT.h"
 #include "TH1.h"
+#include "TH2.h"
 #include "TEventList.h"
 #include "TDirectory.h"
 #include "TEntryList.h"
@@ -22,40 +23,25 @@
 #include "AlpideChip.hpp"
 #include "AlpideTelescope.hpp"
 
-Int_t arrayBadPixels[][4] = {
-  {0,2,244,726},
-  {0,8,201,191},
-  {3010,6,8,962},
-  {3010,7,214,225},
-  {3010,7,380,608},
-  {3010,7,289,822},
-  {3025,6,150,221},
-  {3025,6,191,917},
-  {3025,6,216,444},
-  {3025,6,219,90},
-  {3025,6,325,712},
-  {3025,6,356,666},
-  {3025,8,353,201},
-  {3025,6,187,927},
-  {3025,7,-1,36},
-  {3025,7,-1,37},
-  {3025,8,206,908},
-};
-Int_t numberOfBadPixels = sizeof( arrayBadPixels ) / sizeof( arrayBadPixels[0] );
+//-----------------------------------------------------------------------------------------------------------------//
+//Open the file containing the different mask histograms:
+TFile *inputMasksFile = new TFile("Masks/Masks.root");
+//Define a function to check if a pixel is masked or not:
 Bool_t IsThisABadPixel(Int_t deviceID, Int_t chipID, Int_t row, Int_t col){
-  for(Int_t iBadPixel=0;iBadPixel<numberOfBadPixels;iBadPixel++){
-    if(deviceID == arrayBadPixels[iBadPixel][0]){
-      if(chipID == arrayBadPixels[iBadPixel][1]){
-        if( (row == arrayBadPixels[iBadPixel][2]) || (arrayBadPixels[iBadPixel][2] == -1) ){
-          if(col == arrayBadPixels[iBadPixel][3]){
-            return kTRUE;
-          }
-        }
-      }
-    }
+  TH2D *histoChip;
+  if(deviceID == 0){
+    histoChip = ((TH2D*) inputMasksFile->Get(Form("hMask_ibhic0_chip%d",chipID)));
   }
+  else{
+    histoChip = ((TH2D*) inputMasksFile->Get(Form("hMask_ladder%d_chip%d",deviceID,chipID)));
+  }
+  if(histoChip->GetBinContent(col+1,row+1) != 0) return kTRUE;
   return kFALSE;
 }
+
+
+
+//-----------------------------------------------------------------------------------------------------------------//
 
 using namespace std;
 //_______________________________________________________________________________________________
@@ -63,18 +49,29 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
 {
 
   //-----------------------------------------------------------------------------------------------------------------//
-  //Configure the ladders geometry
-  for(Int_t iLadder=0;iLadder<cNumberOfLadders;iLadder++){
-    cLadderID[iLadder] = cLadderID_All[cParticipatedLadders[iLadder]];
-    cNumberOfChipsInLadder[iLadder] = cNumberOfChipsInLadder_All[cParticipatedLadders[iLadder]];
-    cXPositionOfFirstChipInLadder[iLadder] = cXPositionOfFirstChipInLadder_All[cParticipatedLadders[iLadder]];
-    cYPositionOfFirstChipInLadder[iLadder] = cYPositionOfFirstChipInLadder_All[cParticipatedLadders[iLadder]];
-    cZPositionOfFirstChipInLadder[iLadder] = cZPositionOfFirstChipInLadder_All[cParticipatedLadders[iLadder]];
-    cXRotationOfChipsInLadder[iLadder] = cXRotationOfChipsInLadder_All[cParticipatedLadders[iLadder]];
-    cYRotationOfChipsInLadder[iLadder] = cYRotationOfChipsInLadder_All[cParticipatedLadders[iLadder]];
+  //Get the position of the disk based on the time of the run
+  //Get the alignment folder (there are two disk positions) corresponding to this run:
+  Double_t diskPositionDeltaX = 0;
+  Double_t diskPositionDeltaY = 0;
+  TObjArray *objRunName = outputDirectory.Tokenize("_");
+  Int_t runDate = ((TObjString*)objRunName->UncheckedAt(0))->String().Atoi();
+  Int_t runTime = ((TObjString*)objRunName->UncheckedAt(1))->String().Atoi();
+  if(runDate > 180706){
+    diskPositionDeltaX = -34.705;
+    diskPositionDeltaY = 15;
   }
-  //-----------------------------------------------------------------------------------------------------------------//
+  if(runDate == 180706){
+    if(runTime > 83820){
+      diskPositionDeltaX = -34.705;
+      diskPositionDeltaY = 15;
+    }
+  }
 
+  //-----------------------------------------------------------------------------------------------------------------//
+  //Get the alignment file with the bin corresponding to the run name
+  TFile *inputAlignmentFile = new TFile("LaddersAlignment.root");
+  TH2F *histoMisAlignment = ((TH2F*) inputAlignmentFile->Get("histoMisAlignment"));
+  Int_t binNumberInAlignmentHisto = histoMisAlignment->GetXaxis()->FindBin(outputDirectory);
 
   //-----------------------------------------------------------------------------------------------------------------//
   //Define ladders, telescope and their chips to be added to the output event tree
@@ -93,13 +90,15 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
     arrayOfLadders[iLadder] = new AlpideLadder();
     arrayOfLadders[iLadder]->ResetLadder();
     arrayOfLadders[iLadder]->SetLadderID(cLadderID[iLadder]);
+    Double_t misAlignX = histoMisAlignment->GetBinContent(binNumberInAlignmentHisto,2*iLadder+1);
+    Double_t misAlignY = histoMisAlignment->GetBinContent(binNumberInAlignmentHisto,2*iLadder+2);
     for(Int_t iChip=0;iChip<cNumberOfChipsInLadder[iLadder];iChip++){
       arrayOfChipsInLadders[iLadder][iChip] = new AlpideChip();
       arrayOfChipsInLadders[iLadder][iChip]->ResetChip();
       arrayOfChipsInLadders[iLadder][iChip]->SetNumberOfPixelsX(cNumberOfColumnsInChip);
       arrayOfChipsInLadders[iLadder][iChip]->SetNumberOfPixelsY(cNumberOfRowsInChip);
-      arrayOfChipsInLadders[iLadder][iChip]->SetPositionX(cXPositionOfFirstChipInLadder[iLadder]-iChip*cChipXSize);
-      arrayOfChipsInLadders[iLadder][iChip]->SetPositionY(cYPositionOfFirstChipInLadder[iLadder]);
+      arrayOfChipsInLadders[iLadder][iChip]->SetPositionX(diskPositionDeltaX+cXPositionOfFirstChipInLadder[iLadder]-iChip*cChipXSize-misAlignX);
+      arrayOfChipsInLadders[iLadder][iChip]->SetPositionY(diskPositionDeltaY+cYPositionOfFirstChipInLadder[iLadder]-misAlignY);
       arrayOfChipsInLadders[iLadder][iChip]->SetPositionZ(cZPositionOfFirstChipInLadder[iLadder]);
       arrayOfChipsInLadders[iLadder][iChip]->SetSizeX(cChipXSize);
       arrayOfChipsInLadders[iLadder][iChip]->SetSizeY(cChipYSize);
@@ -121,18 +120,17 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
     arrayOfChipsInTelescope[iChip]->ResetChip();
     arrayOfChipsInTelescope[iChip]->SetNumberOfPixelsX(cNumberOfColumnsInChip);
     arrayOfChipsInTelescope[iChip]->SetNumberOfPixelsY(cNumberOfRowsInChip);
-    arrayOfChipsInTelescope[iChip]->SetPositionX(cXPositionOfChipsInTelescope[iChip]);
-    arrayOfChipsInTelescope[iChip]->SetPositionY(cYPositionOfChipsInTelescope[iChip]);
-    arrayOfChipsInTelescope[iChip]->SetPositionZ(cZPositionOfChipsInTelescope[iChip]);
     arrayOfChipsInTelescope[iChip]->SetSizeX(cChipXSize);
     arrayOfChipsInTelescope[iChip]->SetSizeY(cChipYSize);
-    arrayOfChipsInTelescope[iChip]->SetMisAlignX(0);
-    arrayOfChipsInTelescope[iChip]->SetMisAlignY(0);
     arrayOfChipsInTelescope[iChip]->SetInitResoX(cInitXReso);
     arrayOfChipsInTelescope[iChip]->SetInitResoY(cInitYReso);
     arrayOfChipsInTelescope[iChip]->SetRotationX(cXRotationOfChipsInTelescope[iChip]);
     arrayOfChipsInTelescope[iChip]->SetRotationY(cYRotationOfChipsInTelescope[iChip]);
     arrayOfChipsInTelescope[iChip]->SetChipID(cTelescopeChipID[iChip]);
+    //Get the misalignment values per each chip
+    arrayOfChipsInTelescope[iChip]->SetPositionX(cXPositionOfChipsInTelescope[iChip]);
+    arrayOfChipsInTelescope[iChip]->SetPositionY(cYPositionOfChipsInTelescope[iChip]);
+    arrayOfChipsInTelescope[iChip]->SetPositionZ(cZPositionOfChipsInTelescope[iChip]);
     telescope->AddChip(arrayOfChipsInTelescope[iChip]);
   }
   //-----------------------------------------------------------------------------------------------------------------//
@@ -140,7 +138,7 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
 
   //-----------------------------------------------------------------------------------------------------------------//
   //Get the merged tree (somehow TChain when used mix everything)
-  TFile *inputFile = new TFile(Form("Data/multinoiseScan_%s.root",runName.Data()));
+  TFile *inputFile = new TFile(Form("Data/Test_Beam_0618/Master-slave_data_taking/multinoiseScan_%s.root",runName.Data()));
   TTree *pixelsChain = ((TTree*) inputFile->Get("pixTree"));
 
   Int_t maxTriggerN = (Int_t)pixelsChain->GetMaximum("trgNum");
@@ -164,18 +162,70 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
 
   //-----------------------------------------------------------------------------------------------------------------//
   //Arrange the events in vector of vectors. Each vector with a given index contains the indices of the different hits coresponding to the trigger number. This will make the reading below faster
-  std::vector<std::vector<double> > vectorEvents;
-  for(Int_t iEvent=0;iEvent<maxTriggerN;iEvent++){
-    std::vector<double> tempoVector;
-    vectorEvents.push_back(tempoVector);
-  }
-  Int_t triggerIndex=0;
+  // std::vector<std::vector<double> > vectorEvents;
+  // for(Int_t iEvent=0;iEvent<maxTriggerN;iEvent++){
+  //   std::vector<double> tempoVector;
+  //   vectorEvents.push_back(tempoVector);
+  // }
+  // Int_t triggerIndex=0;
+  // for(Int_t iHitPixel=0;iHitPixel<numberOfHitPixels;iHitPixel++){
+  //   dataBranch->GetEntry(iHitPixel);
+  //   triggerIndex = (Int_t)triggerNumLeaf->GetValue(0);
+  //   vectorEvents[triggerIndex].push_back(iHitPixel);
+  // }
+  //-----------------------------------------------------------------------------------------------------------------//
+
+
+  map<long, vector<int>> mapEvents;
+  map<long, vector<int>> mapEventsTest;
+  long triggerTime;
+  long triggerNumber;
+  // Long_t test2;
   for(Int_t iHitPixel=0;iHitPixel<numberOfHitPixels;iHitPixel++){
     dataBranch->GetEntry(iHitPixel);
-    triggerIndex = (Int_t)triggerNumLeaf->GetValue(0);
-    vectorEvents[triggerIndex].push_back(iHitPixel);
+    triggerTime = (long)trgTimeLeaf->GetValue(0);
+    triggerNumber = (int)triggerNumLeaf->GetValue(0);
+    triggerTime = triggerTime/10000000000;
+    if(triggerTime == 0) continue;
+    mapEvents[triggerTime].push_back(iHitPixel);
+    mapEventsTest[triggerTime].push_back(triggerNumber);
   }
-  //-----------------------------------------------------------------------------------------------------------------//
+  map<long, vector<int>>::iterator mapIterator;
+  map<long, vector<int>>::iterator mapIteratorTest;
+  // cout<<mapEvents.size()<<endl;
+
+
+
+  vector<int> tempoVectorIndex;
+  vector<int> tempoVectorTrigger;
+  vector<int> vectorToBeDeleted;
+  map<int, vector<int>> mapEventsFinal;
+
+  for ( mapIterator = mapEvents.begin(), mapIteratorTest = mapEventsTest.begin(); mapIterator != mapEvents.end(); mapIterator++,mapIteratorTest++ ){
+
+    vectorToBeDeleted.clear();
+
+    tempoVectorIndex = mapIterator->second;
+    tempoVectorTrigger = mapIteratorTest->second;
+    vectorToBeDeleted.push_back(tempoVectorTrigger[0]);
+    Int_t jEntry;
+    for(Int_t iEntry=0;iEntry<tempoVectorTrigger.size();iEntry++){
+      for(jEntry=0;jEntry<vectorToBeDeleted.size();jEntry++){
+        if(TMath::Abs(tempoVectorTrigger[iEntry]-vectorToBeDeleted[jEntry])<10){
+          mapEventsFinal[vectorToBeDeleted[jEntry]].push_back(tempoVectorIndex[iEntry]);
+          break;
+        }
+      }
+      if(jEntry == vectorToBeDeleted.size()){
+        vectorToBeDeleted.push_back(tempoVectorTrigger[iEntry]);
+        mapEventsFinal[vectorToBeDeleted[jEntry]].push_back(tempoVectorIndex[iEntry]);
+      }
+    }
+
+  }
+
+
+
 
 
   //-----------------------------------------------------------------------------------------------------------------//
@@ -204,10 +254,22 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
 
   //-----------------------------------------------------------------------------------------------------------------//
   //Start looping over the trigger numbers. For each trigger, get the vector containing the indices of the different hits, if not all bad hits, update the chips and fill the event.
-  Double_t numberOfTriggers = cFractionOfEvents*maxTriggerN;
-  for(Int_t iTrigger=1;iTrigger<numberOfTriggers;iTrigger++){
+  Double_t numberOfTriggers = 10000;
 
-    printf("Reading rwa hit pixels ... %.0f%%%s", 100.*iTrigger/numberOfTriggers, (iTrigger < numberOfTriggers) ? "\r" : "\n");
+  map<int, vector<int>>::iterator mapIteratorFinal;
+
+  vector<int> tempoVector;
+
+  Int_t tempo=0;
+  for ( mapIteratorFinal = mapEventsFinal.begin(); mapIteratorFinal != mapEventsFinal.end(); mapIteratorFinal++ ){
+    // tempo++;
+    // if(tempo < 140000) continue;
+    tempoVector = mapIteratorFinal->second;
+    if(eventCounter == numberOfTriggers) break;
+    // for(Int_t iTrigger=1;iTrigger<maxTriggerN;iTrigger++){
+
+    printf("Reading raw hit pixels ... %.0f%%%s", 100.*eventCounter/numberOfTriggers, (eventCounter < numberOfTriggers) ? "\r" : "\n");
+    if(eventCounter%10000 == 0) cout<<eventCounter<<endl;
     // cout<<endl;
 
     //This will clear the event.
@@ -232,21 +294,29 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
       arrayOfChipsInTelescope[iChip]->ResetChip();
       telescope->AddChip(arrayOfChipsInTelescope[iChip]);
     }
-
+    Long_t triggerTimeTester;
     //Loop over the indices in the input tree of the hits associated with a trigger
-    for(Int_t iEntry=0;iEntry<vectorEvents[iTrigger].size();iEntry++){
 
-      dataBranch->GetEntry(vectorEvents[iTrigger][iEntry]);
+    for(Int_t iEntry=0;iEntry<tempoVector.size();iEntry++){
+
+
+      dataBranch->GetEntry(tempoVector[iEntry]);
 
       triggerN = (Int_t)triggerNumLeaf->GetValue(0);
       pixelRow = (Int_t)rowLeaf->GetValue(0);
       pixelCol = (Int_t)colLeaf->GetValue(0);
       chipID   = (Int_t)chipIDLeaf->GetValue(0);
       deviceID = (Int_t)deviceIDLeaf->GetValue(0);
+      triggerTime = (Long_t)trgTimeLeaf->GetValue(0);
+
+      // cout<<triggerN<<endl;
+
+      if(iEntry == 0) triggerTimeTester = triggerTime;
 
       if(IsThisABadPixel(deviceID,chipID,pixelRow,pixelCol)){
         continue;
       }
+
 
       pixel->SetCol(pixelCol);
       pixel->SetRow(pixelRow);
@@ -268,6 +338,7 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
       }
 
 
+
     } // End while ReadEvent()
 
 
@@ -284,7 +355,7 @@ void ReadRawTree(TString runName, TString outputFileName, TString outputDirector
       eventCounter++;
     }
 
-    //End loop over trigger numbers
+
   }
 
 
